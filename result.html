@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>النتيجة</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    direction: rtl;
+    text-align: center;
+    background: linear-gradient(-45deg, #84fab0, #8fd3f4, #a6c1ee, #fbc2eb);
+    background-size: 400% 400%;
+    animation: bg 10s infinite;
+}
+
+@keyframes bg {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+}
+
+.container {
+    background: rgba(255,255,255,0.95);
+    margin: 40px auto;
+    padding: 30px;
+    width: 420px;
+    border-radius: 15px;
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+img {
+    width: 200px;
+    margin: 15px;
+    border-radius: 10px;
+}
+
+button {
+    padding: 12px;
+    width: 90%;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #ff6a00, #ee0979);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+.level {
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    margin: 10px;
+    font-weight: bold;
+}
+
+.low { background: green; }
+.medium { background: orange; }
+/* تصميم شريط التحميل الذكي */
+#loading-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+}
+.loader-bar {
+    width: 280px;
+    height: 12px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+.progress {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+    animation: fillProgress 3.5s ease-in-out forwards;
+}
+@keyframes fillProgress { to { width: 100%; } }
+.high { background: red; }
+</style>
+</head>
+
+<body>
+
+    <!-- 1. مكان عرض صورة المستخدم التي تم التقاطها -->
+     <div id="userImage"></div>
+
+<style>
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+</style>
+<div class="container">
+    <h2>🤖 نتيجة التحليل</h2>
+
+    <div id="userImage"></div>
+    <div id="example"></div>
+    <div id="result"></div>
+    <div id="level"></div>
+
+    <button onclick="goBack()">🔙 رجوع</button>
+
+    <audio id="sound">
+        <source src="https://www.soundjay.com/buttons/sounds/button-3.mp3">
+    </audio>
+</div>
+
+<script>
+
+let name = localStorage.getItem("name");
+let symptom = localStorage.getItem("symptom");
+let userImg = localStorage.getItem("capturedImage");
+
+
+
+let diagnosis = "";
+let solution = "";
+let image = "";
+let info = "";
+let level = "";
+let levelClass = "";
+
+// الحالات
+if (symptom === "eczema") {
+    diagnosis = "أكزيما";
+    solution = "استخدم مرطبات طبية وابتعد عن الصابون";
+    image = "https://static.webteb.net/images/content/slideshowslide_sss_9405_273ac6f03ac-6e10-4098-b4e9-d2d01b96567e.jpg";
+
+    info = "الأكزيما حالة جلدية مزمنة تسبب الجفاف والحكة، وتظهر غالباً عند الأطفال لكنها قد تصيب جميع الأعمار. من مسبباتها الحساسية والعوامل الوراثية.";
+
+    level = "🟠 الحالة: متوسطة";
+    levelClass = "medium";
+}
+else if (symptom === "allergy") {
+    diagnosis = "حساسية جلدية";
+    solution = "تجنب المسبب واستخدم مضاد حساسية";
+    image = "https://static.webteb.net/images/content/slideshowslide_sss_6625_13ee2962f7-0b03-462e-8bd0-bb84d5c378fe.jpg";
+
+    info = "الحساسية الجلدية تحدث بسبب تفاعل الجسم مع مواد مثل العطور أو الأطعمة، وتظهر بشكل احمرار أو حكة.";
+
+    level = "🟡 الحالة: خفيفة";
+    levelClass = "low";
+}
+else if (symptom === "rash") {
+    diagnosis = "طفح جلدي";
+    solution = "حافظ على نظافة الجلد واستخدم كريم مهدئ";
+    image = "https://mena.uclahealth.org/wp-content/uploads/2024/01/webteb-291964.jpg";
+
+    info = "الطفح الجلدي هو تغير في شكل الجلد بسبب الحرارة أو التحسس أو العدوى.";
+
+    level = "🔴 الحالة: شديدة";
+    levelClass = "high";
+}
+
+// عرض المثال
+document.getElementById("example").innerHTML = `
+    🖼️ إذا كنت تملك مثل هذا:<br>
+    <img src="${image}">
+`;
+
+// عرض النتيجة
+document.getElementById("result").innerHTML = `
+    👋 أهلاً ${name} <br><br>
+
+    🔍 التشخيص: ${diagnosis} <br><br>
+
+    🧠 معلومات:<br>
+    ${info} <br><br>
+
+    💡 الحل: ${solution} <br><br>
+
+    ⚠️ هذا تشخيص مبدئي وليس بديلاً عن الطبيب
+`;
+
+// عرض التصنيف
+document.getElementById("level").innerHTML = `
+    <div class="level ${levelClass}">
+        ${level}
+    </div>
+`;
+
+// صوت
+document.getElementById("sound").play();
+
+// رجوع
+function goBack() {
+    window.location.href = "main.html";
+}
+
+</script>
+
+</body>
+</html>

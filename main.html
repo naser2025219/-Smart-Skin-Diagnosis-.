@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+     
+<meta charset="UTF-8">
+<title>تشخيص الجلد </title>
+<link rel="icon" type="image/jpeg" href="icon.jpeg">
+<link rel="apple-touch-icon" href="icon.jpeg">
+
+<style>
+body {
+    font-family: Arial;
+    direction: rtl;
+    text-align: center;
+    background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    width: 320px;
+    border-radius: 15px;
+}
+
+input, select, button {
+    width: 90%;
+    padding: 10px;
+    margin: 8px;
+}
+
+video {
+    width: 200px;
+    margin-top: 10px;
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🤖 تشخيص الجلد الذكي</h2>
+
+    <input type="text" id="name" placeholder="اكتب اسمك">
+
+    <input type="file" id="image">
+
+    <select id="symptoms">
+        <option value="">اختر الأعراض</option>
+        <option value="eczema">حكة + جفاف</option>
+        <option value="allergy">احمرار + تورم</option>
+        <option value="rash">بقع حمراء</option>
+    </select>
+
+    <button onclick="startCamera()">📸 تشغيل الكاميرا</button>
+    <video id="video" autoplay></video>
+    <button onclick="capture()" id="snap" style="display:none;">التقاط صورة</button>
+
+    <button onclick="analyze()">تحليل باستخدام AI</button>
+
+    <p id="loading" style="display:none;">🤖 الذكاء الاصطناعي يفكر...</p>
+</div>
+
+<script>
+let video = document.getElementById("video");
+
+function startCamera() {
+    video.style.display = "block";
+    document.getElementById("snap").style.display = "block";
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        video.srcObject = stream;
+    });
+}
+
+function capture() {
+    let canvas = document.createElement("canvas");
+    let context = canvas.getContext("2d");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    context.drawImage(video, 0, 0);
+
+    let imageData = canvas.toDataURL("image/png");
+    localStorage.setItem("capturedImage", imageData);
+
+    alert("تم التقاط الصورة 📸");
+}
+
+function analyze() {
+    let name = document.getElementById("name").value;
+    let symptom = document.getElementById("symptoms").value;
+
+    if (name === "" || symptom === "") {
+        alert("أدخل البيانات");
+        return;
+    }
+
+    localStorage.setItem("name", name);
+    localStorage.setItem("symptom", symptom);
+
+
+    document.getElementById("loading").style.display = "block";
+
+    setTimeout(() => {
+        window.location.href = "result.html";
+    }, 2000);
+}
+</script>
+
+</body>
+</html>

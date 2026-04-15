@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Skin Diagnosis</title>
+ 
+  <link rel="apple-touch-icon" href="./icon.jpeg">
+<link rel="icon" type="image/jpeg" href="./icon.jpeg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Smart Skin Diagnosis">
+</head>   
+    
+    
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: sans-serif; }
+        .splash {
+            position: fixed; width: 100%; height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            background: linear-gradient(-45deg, #a2d2ff, #bde0fe, #caf0f8, #90e0ef);
+            background-size: 400% 400%; animation: gradientBG 5s ease infinite, slideOut 1s ease forwards 8s;
+        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes slideOut { to { transform: translateY(-100%); } }
+        .robot { font-size: 80px; animation: jump 2s infinite; }
+        .text { font-size: 26px; color: #0077b6; margin-top: 20px; font-weight: bold; }
+        @keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
+    </style>
+</head>
+<body>
+    <div class="splash">
+        <div class="robot">🤖</div>
+        <div class="text">تشخيص الجلد الذكي يرحب بكم</div>
+    </div>
+    <script>
+        setTimeout(function(){
+            window.location.href = "main.html"; 
+        }, 3000);
+    </script>
+</body>
+</html>
